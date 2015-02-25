@@ -1,51 +1,6 @@
-# StarView Metafile converter
-
-## Installation
-
-	npm install svmconv
-
-## Usage
-
-```js
-var Parser = require('svmconv')
-  , fs     = require('fs');
-
-fs.open('Object_6', 'r', function(err, fd) {
-    fs.fstat(fd, function(err, stats) {
-        var bufferSize = stats.size,
-            chunkSize  = 512,
-            buffer     = new Buffer(bufferSize),
-            bytesRead  = 0;
-
-        while (bytesRead < bufferSize) {
-            if ((bytesRead + chunkSize) > bufferSize) {
-                chunkSize = (bufferSize - bytesRead);
-            }
-            fs.read(fd, buffer, bytesRead, chunkSize, bytesRead);
-            bytesRead += chunkSize;
-        }
-
-        var parser = new Parser();
-        parser.parse(buffer, 'Object_6', true);
-        fs.close(fd);
-    });
-});
-```
-
-or
-
-```js
-...
-    // set 'render to file' flag as false
-    parser.parse(buffer, 'Object_3', false);
-...
-```
-
-## License 
-
 The MIT License (MIT)
 
-Copyright (c) 2015, Infostroy software, Ltd.
+Copyright (c) 2015, Infostroy Software, Ltd.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
