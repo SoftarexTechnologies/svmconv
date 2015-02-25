@@ -1,7 +1,7 @@
 /**
- * @copyright Infostroy Software, Ltd 2015
+ * @copyright Infostroy Ltd, 2015
  * @author Serge Glazun <t4gr1m@gmail.com>
- * @version 0.1
+ * @version 0.2
  */
 
 /**
@@ -119,7 +119,7 @@ var SvmParser = function() {
  * @returns {SvmParser.prototype}
  */
 SvmParser.prototype.setBackend = function(backend) {
-    // Бекенд для отрисовки графики
+    // Canvas backend
     this.mBackend = backend;
 
     return this;
@@ -310,29 +310,14 @@ SvmParser.prototype.parse = function(data, fileName, writeToFs) {
                 this.mBackend.setFont('14px ' + font.family.string);
                 break;
 
-            /** @TODO: improve this later if necessary **/
-            case 'META_TEXTFILLCOLOR_ACTION':
-                // this.mBackend.textFillColor    = fn.getColor(fn.Uint32(dataArray));
-                // this.mBackend.textFillColorSet = fn.Uint8(dataArray, 4);
-                break;
-            case 'META_TEXTALIGN_ACTION':
-                // this.mBackend.textAlign = fn.Uint16(dataArray);
-                break;
-            case 'META_MAPMODE_ACTION':
-                // this.mBackend.mapMode = Structs.MapMode(dataArray);
-                break;
-            case 'META_PUSH_ACTION':
-                // this.pushValue = dataArray.getUint16(0);
-                break;
-            case 'META_LAYOUTMODE_ACTION':
-                // this.layoutMode = dataArray.getUint8(0);
-                break;
-            case 'META_TEXTLANGUAGE_ACTION':
-                break;
-            case 'META_OVERLINECOLOR_ACTION':
-                // this.mContext.overlineColor    = fn.getColor(fn.Uint32(dataArray));
-                // this.mContext.overlineColorSet = fn.Uint8(dataArray, 4);
-                break;
+            /** @TODO: implement this later if necessary **/
+            case 'META_TEXTFILLCOLOR_ACTION'        :
+            case 'META_TEXTALIGN_ACTION'            :
+            case 'META_MAPMODE_ACTION'              :
+            case 'META_PUSH_ACTION'                 :
+            case 'META_LAYOUTMODE_ACTION'           :
+            case 'META_TEXTLANGUAGE_ACTION'         :
+            case 'META_OVERLINECOLOR_ACTION'        :
             case 'META_POP_ACTION'                  :
             case 'META_RASTEROP_ACTION'             :
             case 'META_TRANSPARENT_ACTION'          :

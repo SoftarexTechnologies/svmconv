@@ -1,7 +1,7 @@
 /**
- * @copyright Infostroy Software, Ltd 2015
+ * @copyright Infostroy Ltd, 2015
  * @author Serge Glazun <t4gr1m@gmail.com>
- * @version 0.1
+ * @version 0.2
  */
 
 var fn = require('./extFunctions');
