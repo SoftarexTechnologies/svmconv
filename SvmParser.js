@@ -198,8 +198,7 @@ SvmParser.prototype.parse = function(data, fileName, writeToFs) {
             console.log('dataArray: %s',          JSON.stringify(dataArray));
         }
 
-        if (dataArray.buffer.byteLength === 0 && DEBUG) {
-            console.log('------------------------------------------------');
+        if (dataArray.buffer.byteLength === 0) {
             continue;
         }
 
