@@ -18,7 +18,7 @@ Please note this when converting svm.
 var Parser = require('svmconv')
   , fs     = require('fs');
 
-fs.open('Object_6', 'r', function(err, fd) {
+fs.open('Source.svm', 'r', function(err, fd) {
     fs.fstat(fd, function(err, stats) {
         var bufferSize = stats.size,
             chunkSize  = 512,
@@ -34,7 +34,7 @@ fs.open('Object_6', 'r', function(err, fd) {
         }
 
         var parser = new Parser();
-        parser.parse(buffer, 'Object_6', true);
+        parser.parse(buffer, 'Source.svm', true);
         fs.close(fd);
     });
 });
@@ -45,7 +45,7 @@ or
 ```js
 ...
     // set 'render to file' flag as false
-    parser.parse(buffer, 'Object_3', false);
+    parser.parse(buffer, 'Source.svm', false);
 ...
 ```
 
