@@ -4,6 +4,14 @@
 
 	npm install svmconv
 
+## Important information
+
+SVM file contains plots rendered into BITMAP file w/o alpha channel.
+This causes that the resulting file placed onto canvas with black background.
+To fix this - **all points that have color rgb(0, 0, 0) are changed to rgb(255, 255, 255)**.
+
+Please note this when converting svm.
+
 ## Usage
 
 ```js
