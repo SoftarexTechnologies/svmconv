@@ -261,8 +261,8 @@ SvmParser.prototype.parse = function(data, fileName, writeToFs) {
                   , ctx       = cnv.getContext('2d')
                   , imageData = ctx.createImageData(bmWidth, bmHeight)
                   , canvasxy  = {
-                        x: (Math.round(header.width  / SCALE) - bmWidth)  / 2 - 15,
-                        y: (Math.round(header.height / SCALE) - bmHeight) / 2 - 10
+                        x: Math.abs((Math.round(header.width  / SCALE) - bmWidth)  / 2 - 15),
+                        y: Math.abs((Math.round(header.height / SCALE) - bmHeight) / 2 - 10)
                     };
 
                 // Draw image from temp canvas and swap black to white
