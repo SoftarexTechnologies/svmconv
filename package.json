@@ -1,6 +1,6 @@
 {
   "name": "svmconv",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Node.js converter plugin for StarView Metafiles",
   "main": "SvmParser.js",
   "dependencies": {

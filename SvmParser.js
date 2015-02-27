@@ -1,7 +1,7 @@
 /**
  * @copyright Infostroy Ltd, 2015
  * @author Serge Glazun <t4gr1m@gmail.com>
- * @version 0.3
+ * @version 0.0.4
  */
 
 /**
@@ -132,7 +132,7 @@ SvmParser.prototype.setBackend = function(backend) {
  *
  * @returns {Boolean|SvmParser.prototype}
  */
-SvmParser.prototype.parse = function(data, fileName, writeToFs) {
+SvmParser.prototype.parse = function(data, fileName, writeToFs, bitMapOffset) {
     if (data.toString('utf8', 0, 8).indexOf('VCLMTF') === -1) {
         return false;
     }
@@ -261,8 +261,8 @@ SvmParser.prototype.parse = function(data, fileName, writeToFs) {
                   , ctx       = cnv.getContext('2d')
                   , imageData = ctx.createImageData(bmWidth, bmHeight)
                   , canvasxy  = {
-                        x: Math.abs((Math.round(header.width  / SCALE) - bmWidth)  / 2 - 15),
-                        y: Math.abs((Math.round(header.height / SCALE) - bmHeight) / 2 - 10)
+                        x: bitMapOffset ? parseFloat(bitMapOffset.x) * 38 : Math.abs((header.width  / SCALE - bmWidth)  / 2 - 15),
+                        y: bitMapOffset ? parseFloat(bitMapOffset.y) * 38 : Math.abs((header.height / SCALE - bmHeight) / 2 - 10)
                     };
 
                 // Draw image from temp canvas and swap black to white
@@ -282,7 +282,9 @@ SvmParser.prototype.parse = function(data, fileName, writeToFs) {
                         imageData.data[index1 + 3] = 255;
 
                         if (g === 0 && r === 0 && b === 0) {
-                            imageData.data[index1 + 3] = 0;
+                            imageData.data[index1]     = 255;
+                            imageData.data[index1 + 1] = 255;
+                            imageData.data[index1 + 2] = 255;
                         }
                     }
                 }
@@ -382,7 +384,7 @@ SvmParser.prototype.parse = function(data, fileName, writeToFs) {
  *
  * @returns {Buffer}
  */
-function decodeBase64Image(dataString) {
+decodeBase64Image = function(dataString) {
   var matches = dataString.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/),
     response = {};
 

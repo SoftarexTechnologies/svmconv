@@ -1,7 +1,7 @@
 /**
  * @copyright Infostroy Ltd, 2015
  * @author Serge Glazun <t4gr1m@gmail.com>
- * @version 0.3
+ * @version 0.0.4
  */
 
 /**
@@ -118,6 +118,7 @@ Painter.prototype.getTranslate = function() {
  * Draw rectangle
  *
  * @param {object} rect
+ * @param {float}  scale
  *
  * @returns {Painter.prototype}
  */
@@ -136,6 +137,7 @@ Painter.prototype.drawRect = function(rect, scale) {
  * Draw polyline
  *
  * @param {array} polyline
+ * @param {float} scale
  *
  * @returns {Painter.prototype}
  */
@@ -174,6 +176,7 @@ Painter.prototype.drawPolyline = function(polyline, scale) {
  * Draw polygon
  *
  * @param {array} polygon
+ * @param {float} scale
  *
  * @returns {Painter.prototype}
  */
@@ -245,7 +248,7 @@ Painter.prototype.getContext = function() {
  * 
  * @returns {String}
  */
-function rgb2hex(rgb) {
+rgb2hex = function(rgb) {
     rgb = rgb.match(/^rgba?[\s+]?\([\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?/i);
     return (rgb && rgb.length === 4) ? "#" +
         ("0" + parseInt(rgb[1],10).toString(16)).slice(-2) +

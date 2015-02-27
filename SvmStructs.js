@@ -1,7 +1,7 @@
 /**
  * @copyright Infostroy Ltd, 2015
  * @author Serge Glazun <t4gr1m@gmail.com>
- * @version 0.3
+ * @version 0.0.4
  */
 
 var fn = require('./extFunctions');
@@ -10,7 +10,7 @@ var fn = require('./extFunctions');
  * Version info
  *
  * @param {DataView} stream
- * @param {objcet}   parser
+ * @param {integer}  offset
  *
  * @returns {object}
  */
@@ -24,7 +24,7 @@ module.exports.VersionCompat = VersionCompat = function(stream, offset) {
 /**
  *
  * @param {DataView} stream
- * @param {object}   parser
+ * @param {integer}  offset
  *
  * @returns {object}
  */
@@ -39,7 +39,7 @@ module.exports.Fraction = Fraction = function(stream, offset) {
  * Point
  *
  * @param {DataView} stream
- * @param {object}   parser
+ * @param {integer}  offset
  *
  * @returns {object}
  */
@@ -54,7 +54,7 @@ module.exports.Point = Point = function(stream, offset) {
  * 33b length
  *
  * @param {DataView} stream
- * @param {object}   parser
+ * @param {integer}  offset
  *
  * @returns {object}
  */
@@ -74,7 +74,7 @@ module.exports.MapMode = MapMode = function(stream, offset) {
  * 55b length
  *
  * @param {DataView} stream
- * @param {object}   parser
+ * @param {integer}  offset
  *
  * @returns {object}
  */
@@ -110,7 +110,7 @@ module.exports.Font = function(fontName, fontSize, fontWeight) {
  * Rectangle
  *
  * @param {DataView} stream
- * @param {object}   parser
+ * @param {integer}  offset
  *
  * @returns {object}
  */
@@ -127,7 +127,7 @@ module.exports.Rect = function(stream, offset) {
  * Polygon
  *
  * @param {DataView} stream
- * @param {object}   parser
+ * @param {integer}  offset
  *
  * @returns {array}
  */
@@ -159,7 +159,7 @@ module.exports.Polygon = function(stream, offset) {
  * Parse string data from stream
  *
  * @param {DataView} stream
- * @param {object}   parser
+ * @param {integer}  offset
  * @param {string}   string
  *
  * @returns {string}

@@ -1,7 +1,7 @@
 /**
  * @copyright Infostroy Ltd, 2015
  * @author Serge Glazun <t4gr1m@gmail.com>
- * @version 0.3
+ * @version 0.0.4
  */
 
 var offset        = 0
@@ -64,30 +64,60 @@ var offset        = 0
     "META_COMMENT_ACTION"
 ];
 
+/**
+ *
+ * @param {DataView} stream
+ *
+ * @returns {Uint8}
+ */
 Uint8 = function(stream) {
     var data = stream.getUint8(offset);
     offset  += 1;
     return data;
 };
 
+/**
+ *
+ * @param {DataView} stream
+ *
+ * @returns {Uint16}
+ */
 Uint16 = function(stream) {
     var data = stream.getUint16(offset, true);
     offset  += 2;
     return data;
 };
 
+/**
+ *
+ * @param {DataView} stream
+ *
+ * @returns {Uint32}
+ */
 Uint32 = function(stream) {
     var data = stream.getUint32(offset, true);
     offset  += 4;
     return data;
 };
 
+/**
+ *
+ * @param {DataView} stream
+ *
+ * @returns {Int32}
+ */
 Int32 = function(stream) {
     var data = stream.getInt32(offset, true);
     offset  += 4;
     return data;
 };
 
+/**
+ *
+ * @param {DataView} data
+ *
+ * @returns {object}
+ */
 VersionCompat = function(data) {
     return {
         version: Uint16(data) || 0,
@@ -95,6 +125,12 @@ VersionCompat = function(data) {
     };
 };
 
+/**
+ *
+ * @param {DataView} data
+ *
+ * @returns {object}
+ */
 Fraction = function(data) {
     return {
         numerator  : Uint32(data) || 1,
@@ -102,6 +138,12 @@ Fraction = function(data) {
     };
 };
 
+/**
+ *
+ * @param {DataView} data
+ *
+ * @returns {object}
+ */
 Point = function(data) {
     return {
         x: Int32(data) || 0,
@@ -109,6 +151,12 @@ Point = function(data) {
     };
  };
 
+/**
+ *
+ * @param {DataView} data
+ *
+ * @returns {object}
+ */
 MapMode = function(data) {
     return {
         version : VersionCompat(data),
@@ -120,6 +168,12 @@ MapMode = function(data) {
     };
 };
 
+/**
+ *
+ * @param {DataView} data
+ *
+ * @returns {SvmHeader}
+ */
 SvmHeader = function(data) {
     this.versionCompat   = VersionCompat(data);
     this.compressionMode = Uint32(data);
@@ -131,6 +185,12 @@ SvmHeader = function(data) {
     return this;
 };
 
+/**
+ *
+ * @param {Uint32} int32data
+ *
+ * @returns {String}
+ */
 getColor = function(int32data) {
     var a = int32data >> 24 & 0xff
       , r = int32data >> 16 & 0xff
@@ -139,6 +199,13 @@ getColor = function(int32data) {
     return 'rgba(' + r + ',' + g + ',' + b + ',' + a + ');';
 };
 
+/**
+ *
+ * @param {DataView} data
+ * @param {integer}  startFrom
+ *
+ * @returns {object}
+ */
 parseString = function(data, startFrom) {
     var length = data.getUint16(startFrom, true)
       , string = ''
@@ -155,6 +222,13 @@ parseString = function(data, startFrom) {
     };
 };
 
+/**
+ *
+ * @param {DataView} stream
+ * @param {integer} offset
+ *
+ * @returns {object}
+ */
 parsePolygon = function(stream, offset) {
     var pointsCount = stream.getUint16(offset, true)
       , polygon     = {
@@ -176,6 +250,10 @@ parsePolygon = function(stream, offset) {
     return polygon;
 };
 
+/**
+ *
+ * @returns {boolean}
+ */
 convertSVM = function() {
     var reader = new FileReader();
     reader.readAsArrayBuffer(document.getElementById('file').files[0]);
@@ -249,8 +327,7 @@ convertSVM = function() {
                     }
                     break;
                 case 'META_TEXTARRAY_ACTION':
-                    var dxArray = false
-                      , string  = {
+                    var string  = {
                             startPoint: {
                                 x: dataArray.getInt32(0, true) / SCALING_COEFF,
                                 y: dataArray.getInt32(4, true) / SCALING_COEFF
@@ -286,10 +363,9 @@ convertSVM = function() {
                         var bmWidth  = dataArray.getUint32(18, true)
                           , bmpSize  = dataArray.getUint32(2, true)
                           , bmHeight = dataArray.getUint32(22, true)
-                          , img      = new Image();
-
-                        var xy = {
-                            x: (Math.round(header.width / SCALING_COEFF) - bmWidth) / 2 - 15,
+                          , img      = new Image()
+                          , canvasxy = {
+                            x: (Math.round(header.width  / SCALING_COEFF) - bmWidth)  / 2 - 15,
                             y: (Math.round(header.height / SCALING_COEFF) - bmHeight) / 2 - 10
                         };
 
@@ -304,23 +380,25 @@ convertSVM = function() {
                             var frame = ctx.getImageData(0, 0, bmWidth, bmHeight)
                               , l     = frame.data.length / 4;
                             for (var i = 0; i < l; i++) {
-                                var r = frame.data[i * 4 + 0];
-                                var g = frame.data[i * 4 + 1];
-                                var b = frame.data[i * 4 + 2];
+                                var r = frame.data[i * 4 + 0]
+                                  , g = frame.data[i * 4 + 1]
+                                  , b = frame.data[i * 4 + 2];
 
-                                if (g < 50 && r < 50 && b < 50) {
-                                    frame.data[i * 4 + 3] = 0;
+                                if (g === 0 && r === 0 && b === 0) {
+                                    frame.data[i * 4]     = 255;
+                                    frame.data[i * 4 + 1] = 255;
+                                    frame.data[i * 4 + 2] = 255;
                                 }
                             }
-                            xPainter.getContext().putImageData(frame, xy.x, xy.y);
+                            xPainter.getContext().putImageData(frame, canvasxy.x, canvasxy.y);
                         };
                     break;
                 case 'META_LINECOLOR_ACTION':
-                    xPainter.pen.color   = getColor(dataArray.getUint32(0, true))
+                    xPainter.pen.color   = getColor(dataArray.getUint32(0, true));
                     xPainter.pen.enabled = dataArray.getUint8(4);
                     break;
                 case 'META_FILLCOLOR_ACTION':
-                    xPainter.brush.color   = getColor(dataArray.getUint32(0, true))
+                    xPainter.brush.color   = getColor(dataArray.getUint32(0, true));
                     xPainter.brush.enabled = dataArray.getUint8(4);
                     break;
                 case 'META_TEXTCOLOR_ACTION':
@@ -384,4 +462,6 @@ convertSVM = function() {
             }
         }
     };
-}
+
+    return true;
+};

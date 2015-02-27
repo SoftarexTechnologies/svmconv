@@ -1,7 +1,7 @@
 /**
  * @copyright Infostroy Ltd, 2015
  * @author Serge Glazun <t4gr1m@gmail.com>
- * @version 0.3
+ * @version 0.0.4
  */
 
 /**
@@ -118,6 +118,7 @@ Painter.prototype.getTranslate = function() {
  * Draw rectangle
  * 
  * @param {object} rect
+ * @param {float}  scale
  * 
  * @returns {Painter.prototype}
  */
@@ -133,17 +134,18 @@ Painter.prototype.drawRect = function(rect, scale) {
 };
 
 function rgb2hex(rgb){
- rgb = rgb.match(/^rgba?[\s+]?\([\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?/i);
- return (rgb && rgb.length === 4) ? "#" +
-  ("0" + parseInt(rgb[1],10).toString(16)).slice(-2) +
-  ("0" + parseInt(rgb[2],10).toString(16)).slice(-2) +
-  ("0" + parseInt(rgb[3],10).toString(16)).slice(-2) : '';
+    rgb = rgb.match(/^rgba?[\s+]?\([\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?/i);
+    return (rgb && rgb.length === 4) ? "#" +
+        ("0" + parseInt(rgb[1],10).toString(16)).slice(-2) +
+        ("0" + parseInt(rgb[2],10).toString(16)).slice(-2) +
+        ("0" + parseInt(rgb[3],10).toString(16)).slice(-2) : '';
 };
 
 /**
  * Draw polyline
  * 
  * @param {array} polyline
+ * @param {float} scale
  * 
  * @returns {Painter.prototype}
  */
@@ -182,6 +184,7 @@ Painter.prototype.drawPolyline = function(polyline, scale) {
  * Draw polygon
  * 
  * @param {array} polygon
+ * @param {float} scale
  * 
  * @returns {Painter.prototype}
  */
@@ -255,11 +258,10 @@ Painter.prototype.setTransform = function(transform, combine) {
     return this;
 };
 
-Painter.prototype.setPen = function(pen) {
-    this.pen = pen;
-    return this;
-};
-
+/**
+ * 
+ * @returns {DOMnode}
+ */
 Painter.prototype.getContext = function() {
     return this.context;
-}
+};
