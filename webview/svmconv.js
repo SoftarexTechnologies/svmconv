@@ -1,7 +1,7 @@
 /**
  * @copyright Infostroy Ltd, 2015
  * @author Serge Glazun <t4gr1m@gmail.com>
- * @version 0.0.4
+ * @version 0.0.5
  */
 
 var offset        = 0
@@ -72,7 +72,7 @@ var offset        = 0
  */
 Uint8 = function(stream) {
     var data = stream.getUint8(offset);
-    offset  += 1;
+    offset++;
     return data;
 };
 
@@ -207,9 +207,9 @@ getColor = function(int32data) {
  * @returns {object}
  */
 parseString = function(data, startFrom) {
-    var length = data.getUint16(startFrom, true)
-      , string = ''
-      , startFrom = parseInt(startFrom) + 2;
+    var length    = data.getUint16(startFrom, true)
+      , string    = ''
+      , startFrom = parseInt(startFrom, 10) + 2;
 
     for (var i = 0; i < length; i++) {
         var ch  = data.getUint8(startFrom + i);
@@ -232,9 +232,9 @@ parseString = function(data, startFrom) {
 parsePolygon = function(stream, offset) {
     var pointsCount = stream.getUint16(offset, true)
       , polygon     = {
-        points: [],
-        offset: offset
-    };
+          points: [],
+          offset: offset
+      };
     offset += 2;
     for (var i = 0; i < pointsCount; ++i) {
         var x = Math.round(stream.getInt32(offset, true));
@@ -259,11 +259,11 @@ convertSVM = function() {
     reader.readAsArrayBuffer(document.getElementById('file').files[0]);
     var ab = '';
     reader.onload = function(e) {
-        ab = e.target.result;
-        var dv = new DataView(ab);
-
+        ab     = e.target.result;
         offset = 6;
-        var header   = new SvmHeader(dv)
+
+        var dv       = new DataView(ab)
+          , header   = new SvmHeader(dv)
           , canvas   = document.getElementById('canvas').getContext('2d')
           , xPainter = new Painter(canvas);
 
@@ -327,7 +327,7 @@ convertSVM = function() {
                     }
                     break;
                 case 'META_TEXTARRAY_ACTION':
-                    var string  = {
+                    var string = {
                             startPoint: {
                                 x: dataArray.getInt32(0, true) / SCALING_COEFF,
                                 y: dataArray.getInt32(4, true) / SCALING_COEFF
@@ -335,7 +335,7 @@ convertSVM = function() {
                             text : ''
                         }
                       , string_len = dataArray.getUint16(8, true)
-                      , local_offs = 12;
+                      , local_offs = dataArray.byteLength - string_len * 2;
 
                       for (var i = 0; i < string_len * 2; i += 2) {
                         string.text += String.fromCharCode(dataArray.getUint16(local_offs + i, true));
@@ -353,9 +353,9 @@ convertSVM = function() {
 
                         BufferToImage = function(buffer, start, length) {
                             var imageArray      = new Uint8Array(buffer, start, length)
-                            var stringFromArray = GetStringFromArray(imageArray)
-                            var base64String    = window.btoa(stringFromArray)
-                            var srcStr          = "data:image/bmp;base64," + base64String;
+                              , stringFromArray = GetStringFromArray(imageArray)
+                              , base64String    = window.btoa(stringFromArray)
+                              , srcStr          = "data:image/bmp;base64," + base64String;
 
                             return srcStr;
                         };
@@ -365,9 +365,9 @@ convertSVM = function() {
                           , bmHeight = dataArray.getUint32(22, true)
                           , img      = new Image()
                           , canvasxy = {
-                            x: (Math.round(header.width  / SCALING_COEFF) - bmWidth)  / 2 - 15,
-                            y: (Math.round(header.height / SCALING_COEFF) - bmHeight) / 2 - 10
-                        };
+                              x: (Math.round(header.width  / SCALING_COEFF) - bmWidth)  / 2 - 15,
+                              y: (Math.round(header.height / SCALING_COEFF) - bmHeight) / 2 - 10
+                          };
 
                         img.src    = BufferToImage(ab, curr_offset, bmpSize);
                         img.onload = function() {

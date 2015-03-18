@@ -1,7 +1,7 @@
 /**
  * @copyright Infostroy Ltd, 2015
  * @author Serge Glazun <t4gr1m@gmail.com>
- * @version 0.0.4
+ * @version 0.0.5
  */
 
 /**
@@ -236,7 +236,7 @@ Painter.prototype.drawPolygon = function(polygon, scale) {
 Painter.prototype.drawText = function(position, text) {
     this.context.font      = this.font;
     this.context.fillStyle = rgb2hex(this.fontstyle);
-    this.context.fillText(text, position.x, position.y);
+    this.context.fillText(text, position.x + 0.5, position.y - 0.5);
     return this;
 };
 

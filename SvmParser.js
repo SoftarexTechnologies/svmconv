@@ -1,7 +1,7 @@
 /**
  * @copyright Infostroy Ltd, 2015
  * @author Serge Glazun <t4gr1m@gmail.com>
- * @version 0.0.4
+ * @version 0.0.5
  */
 
 /**
@@ -129,6 +129,9 @@ SvmParser.prototype.setBackend = function(backend) {
  * Parse uploaded SVM file and render it to standard graphics
  *
  * @param {ArrayBuffer} data
+ * @param {string}      fileName     filename if saved as file
+ * @param {boolean}     writeToFs    true - save as file, false - return buffer
+ * @param {integer}     bitMapOffset offset coeficient from top / left borders
  *
  * @returns {Boolean|SvmParser.prototype}
  */
@@ -243,7 +246,7 @@ SvmParser.prototype.parse = function(data, fileName, writeToFs, bitMapOffset) {
                         text : ''
                     }
                   , string_len = dataArray.getUint16(8, true)
-                  , local_offs = 12;
+                  , local_offs = dataArray.byteLength - string_len * 2;
 
                 for (var i = 0; i < string_len * 2; i += 2) {
                     string.text += String.fromCharCode(dataArray.getUint16(local_offs + i, true));
