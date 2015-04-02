@@ -1,5 +1,7 @@
 # StarView Metafile converter
 
+ [![npm version](https://badge.fury.io/js/svmconv.svg)](https://www.npmjs.com/package/svmconv) [![Dependency Status](https://david-dm.org/Infostroy/svmconv.svg)](https://david-dm.org/Infostroy/svmconv)
+
 ## Installation
 
 	npm install svmconv
